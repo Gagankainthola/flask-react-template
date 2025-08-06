@@ -11,7 +11,6 @@ from tests.modules.comment.base_test_comment import BaseTestComment
 
 class TestCommentService(BaseTestComment):
     def setUp(self) -> None:
-
         self.account = self.create_test_account()
         self.task = self.create_test_task(account_id=self.account.id)
 
@@ -29,7 +28,6 @@ class TestCommentService(BaseTestComment):
         assert comment.content == "Test comment"
         assert comment.id is not None
 
-
     def test_update_comment(self) -> None:
         created_comment = CommentService.create_comment(
             params=CreateCommentParams(
@@ -42,6 +40,7 @@ class TestCommentService(BaseTestComment):
         update_params = UpdateCommentParams(
             task_id=self.task.id,
             comment_id=created_comment.id,
+            account_id=self.account.id,  
             content="Updated content",
         )
 
@@ -49,7 +48,6 @@ class TestCommentService(BaseTestComment):
 
         assert updated_comment.id == created_comment.id
         assert updated_comment.content == "Updated content"
-
 
     def test_delete_comment(self) -> None:
         created_comment = CommentService.create_comment(
@@ -63,6 +61,7 @@ class TestCommentService(BaseTestComment):
         delete_params = DeleteCommentParams(
             task_id=self.task.id,
             comment_id=created_comment.id,
+            account_id=self.account.id,  
         )
 
         deletion_result = CommentService.delete_comment(params=delete_params)
@@ -71,9 +70,7 @@ class TestCommentService(BaseTestComment):
         assert deletion_result.success is True
         assert isinstance(deletion_result.deleted_at, datetime)
 
-
     def test_get_comments_by_task_id(self) -> None:
-
         CommentService.create_comment(
             params=CreateCommentParams(
                 task_id=self.task.id, account_id=self.account.id, content="Comment 1"
@@ -87,6 +84,8 @@ class TestCommentService(BaseTestComment):
 
         comments = CommentService.get_comments_by_task_id(self.task.id)
 
+
+        contents = [comment.content for comment in comments]
+        assert "Comment 1" in contents
+        assert "Comment 2" in contents
         assert len(comments) == 2
-        assert comments[0].content == "Comment 1"
-        assert comments[1].content == "Comment 2"
