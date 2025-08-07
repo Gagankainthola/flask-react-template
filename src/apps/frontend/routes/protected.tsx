@@ -7,7 +7,7 @@ import { useAccountContext, useAuthContext } from 'frontend/contexts';
 import { Dashboard, NotFound } from 'frontend/pages';
 import AppLayout from 'frontend/pages/app-layout/app-layout';
 import { AsyncError } from 'frontend/types';
-
+import { TasksPage } from  "../pages/tasks/tasks";
 const App = () => {
   const { getAccountDetails } = useAccountContext();
   const { logout } = useAuthContext();
@@ -34,6 +34,7 @@ export const protectedRoutes = [
     element: <App />,
     children: [
       { path: '', element: <Dashboard /> },
+      {path: routes.TASKS, element: <TasksPage />},
       { path: '*', element: <NotFound /> },
     ],
   },
