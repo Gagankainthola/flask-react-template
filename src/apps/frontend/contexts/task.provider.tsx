@@ -6,20 +6,19 @@ import React, {
   useState,
 } from 'react';
 
-// Updated Task type to match your usage
 type Task = {
   _id: string;
   title: string;
   description?: string;
-  active: boolean; // Changed from 'completed' to 'active'
-  account_id: string; // Added account_id property
+  active: boolean;
+  account_id: string; 
   created_at: string;
   updated_at: string;
 };
 
 type Nullable<T> = T | null;
 
-// Mock TaskService for demonstration
+
 class TaskService {
   async getTasks() {
     return { data: [] as Task[] };
@@ -41,7 +40,6 @@ class TaskService {
   }
   
   async deleteTask(taskId: string) {
-    // Use the taskId parameter to avoid unused parameter error
     console.log(`Deleting task with ID: ${taskId}`);
     return { success: true };
   }
@@ -109,5 +107,4 @@ export const TaskProvider: React.FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-// Export the Task type so it can be used in other files
 export type { Task };
